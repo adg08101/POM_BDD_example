@@ -1,0 +1,73 @@
+package selenium_cucumber.selenium_cucumber.general;
+
+import java.util.List;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.support.PageFactory;
+import org.openqa.selenium.support.ui.WebDriverWait;
+
+public class PageObject {
+	private WebDriver driver;
+	protected String urlpath = "";
+	private WebDriverWait wait;
+	private int waitTime;
+
+	public PageObject() {
+		this.setDriver(Setup.getDriver());
+		PageFactory.initElements(this.getDriver(), this);
+		setWaitTime(20);
+		setWait(new WebDriverWait(this.getDriver(), this.getWaitTime()));
+	}
+
+	public WebDriver getDriver() {
+		return driver;
+	}
+
+	public void setDriver(WebDriver driver) {
+		this.driver = driver;
+	}
+
+	public void openURL() {
+		Setup.openUrl(System.getProperty("defaultURL").concat("/").concat(urlpath));
+	}
+
+	protected WebElement getWebElement(By by) {
+		return this.getDriver().findElement(by);
+	}
+
+	protected List<WebElement> getWebElements(By by) {
+		return this.getDriver().findElements(by);
+	}
+
+	protected void cliksOnButton(By by) {
+		getWebElement(by).click();
+		Setup.getWait().waitForLoading(10000);
+	}
+
+	public String getCurrentUrl() {
+		return this.getDriver().getCurrentUrl();
+	}
+
+	public String getPagePath() {
+		return this.urlpath;
+	}
+
+	public WebDriverWait getWait() {
+		return wait;
+	}
+
+	public void setWait(WebDriverWait wait) {
+		this.wait = wait;
+	}
+
+	public int getWaitTime() {
+		return waitTime;
+	}
+
+	public void setWaitTime(int waitTime) {
+		this.waitTime = waitTime;
+	}
+
+}
